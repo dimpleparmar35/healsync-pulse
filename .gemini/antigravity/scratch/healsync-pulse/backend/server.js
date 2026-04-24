@@ -78,6 +78,13 @@ app.get('/api/queue', (req, res) => {
   });
 });
 
+app.post('/api/queue/call/:id', (req, res) => {
+  db.run('UPDATE tokens SET status = "In Consultation" WHERE id = ?', [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
 app.post('/api/tokens', (req, res) => {
   const { name, department } = req.body;
   const tokenNum = 'B-' + Math.floor(Math.random() * 100);

@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
 
 :root {
-  --bg-deep: #05070A;
-  --bg-card: rgba(15, 18, 25, 0.7);
-  --accent-pulse: #00F2FF;
-  --accent-violet: #8B5CF6;
-  --accent-teal: #10B981;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --danger: #EF4444;
-  --gradient-neon: linear-gradient(135deg, #00F2FF, #8B5CF6);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --bg-deep: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --accent-pulse: #0052CC;
+  --accent-violet: #625DF5;
+  --accent-teal: #00875A;
+  --text-primary: #172B4D;
+  --text-secondary: #6B778C;
+  --glass-border: rgba(9, 30, 66, 0.08);
+  --danger: #DE350B;
+  --gradient-neon: linear-gradient(135deg, #0052CC, #625DF5);
+  --transition: all 0.2s ease-in-out;
 }
 
 * {
@@ -21,48 +21,46 @@
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-deep);
   color: var(--text-primary);
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* Glassmorphism Component */
+/* Enterprise Component */
 .glass {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .neo-shadow {
-  box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 82, 204, 0.05);
 }
 
 /* Layout */
 .layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
 }
 
 .sidebar {
-  padding: 2rem;
+  padding: 1.5rem;
+  background: #FFFFFF;
   border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .main-content {
-  padding: 2rem;
+  padding: 3rem;
+  background: var(--bg-deep);
   overflow-y: auto;
   max-height: 100vh;
 }
