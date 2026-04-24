@@ -34,6 +34,7 @@ ChartJS.register(
 const API_BASE = 'http://localhost:5000/api';
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [view, setView] = useState('patient'); // patient, doctor, admin, records
   const [vitals, setVitals] = useState([]);
   const [queue, setQueue] = useState([]);
@@ -42,9 +43,11 @@ const App = () => {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
 
   useEffect(() => {
-    fetchData();
-    initVoice();
-  }, [view]);
+    if (isLoggedIn) {
+      fetchData();
+      if (!isVoiceActive) initVoice();
+    }
+  }, [view, isLoggedIn]);
 
   const fetchData = async () => {
     try {
@@ -73,6 +76,10 @@ const App = () => {
     recognition.start();
     setIsVoiceActive(true);
   };
+
+  if (!isLoggedIn) {
+    return <AuthPage onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <div className="layout">
@@ -457,5 +464,113 @@ const RecordsView = () => (
     </div>
   </div>
 );
+
+const AuthPage = ({ onLogin }) => {
+  const [isLogin, setIsLogin] = useState(true);
+
+  return (
+    <div className="auth-container glass-blur">
+      <motion.div 
+        className="auth-card glass neo-shadow"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+      >
+        <div className="auth-header">
+          <div className="logo-icon glass"><Activity color="#00F2FF" /></div>
+          <h2>{isLogin ? 'Welcome to Pulse' : 'Create Account'}</h2>
+          <p style={{ color: '#94A3B8' }}>{isLogin ? 'Secure Entry to HealSync Ecosystem' : 'Join the Future of Healthcare'}</p>
+        </div>
+
+        <form className="auth-form" onSubmit={(e) => { e.preventDefault(); onLogin(); }}>
+          {!isLogin && (
+            <div className="input-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Dimple Parmar" required />
+            </div>
+          )}
+          <div className="input-group">
+            <label>Medical Email</label>
+            <input type="email" placeholder="name@pulse.health" required />
+          </div>
+          <div className="input-group">
+            <label>Access Key</label>
+            <input type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1.5rem' }}>
+            {isLogin ? 'Authorize Access' : 'Create Pulse ID'}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: '#00F2FF', cursor: 'pointer' }}>
+            {isLogin ? "Don't have a Pulse ID? Register" : 'Already have an ID? Login'}
+          </button>
+          <div className="creator-tag" style={{ marginTop: '2rem' }}>
+            Architected by <span className="accent-text" style={{ fontWeight: 800 }}>Dimple Parmar</span>
+          </div>
+        </div>
+      </motion.div>
+
+      <style jsx="true">{`
+        .auth-container {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-image: 
+            radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+        }
+        .auth-card {
+          width: 100%;
+          max-width: 420px;
+          padding: 3rem;
+          border-radius: 32px;
+          text-align: center;
+        }
+        .auth-header {
+          margin-bottom: 2.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+        .auth-form {
+          text-align: left;
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
+        .input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        .input-group label {
+          font-size: 0.8rem;
+          color: #94A3B8;
+          font-weight: 600;
+        }
+        .input-group input {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 0.8rem 1rem;
+          border-radius: 12px;
+          color: white;
+          outline: none;
+          transition: 0.2s;
+        }
+        .input-group input:focus {
+          border-color: #00F2FF;
+          background: rgba(0, 242, 255, 0.02);
+        }
+        .auth-footer {
+          margin-top: 2rem;
+          font-size: 0.9rem;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default App;

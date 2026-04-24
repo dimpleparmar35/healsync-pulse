@@ -58,6 +58,18 @@ db.serialize(() => {
 
 // --- API Endpoints ---
 
+// Auth
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  // Simulation: Always success for demo
+  res.json({ success: true, user: { id: 1, name: 'John Doe', email } });
+});
+
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, password } = req.body;
+  res.json({ success: true, user: { id: 2, name, email } });
+});
+
 // Queue
 app.get('/api/queue', (req, res) => {
   db.all('SELECT * FROM tokens ORDER BY created_at DESC', [], (err, rows) => {
